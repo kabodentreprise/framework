@@ -167,32 +167,52 @@
     <script src="https://checkout.fedapay.com/js/checkout.js"></script>
     <script>
         function initierPaiement(id, titre, prix) {
+            // Réinitialiser le formulaire
             let form = document.getElementById('payment-form');
             document.getElementById('payment-id-contenu').value = id;
 
+            if (typeof FedaPay === 'undefined') {
+                alert("La librairie FedaPay n'est pas chargée. Vérifiez votre connexion internet.");
+                return;
+            }
+
             try {
-                let widget = FedaPay.init({
-                    public_key: '{{ config('fedapay.public_key') }}',
+                let options = {
+                    public_key: 'pk_sandbox_Ksy9SZ5Aqg5DSwQeuJAuVtEy', // Clé Sandbox Hardcodée pour test
                     transaction: {
-                        amount: prix,
-                        description: 'Achat : ' + titre
+                        amount: parseInt(prix),
+                        description: 'Achat : ' + titre,
+                        callback_url: '{{ route('paiement.callback') }}' // Redirection après succès
                     },
                     customer: {
-                        email: '{{ Auth::user()->email ?? "" }}',
-                        lastname: '{{ Auth::user()->nom ?? "" }}',
-                        firstname: '{{ Auth::user()->prenom ?? "" }}'
+                        email: '{{ Auth::check() ? Auth::user()->email : "" }}',
+                        lastname: '{{ Auth::check() ? addslashes(Auth::user()->nom) : "" }}',
+                        firstname: '{{ Auth::check() ? addslashes(Auth::user()->prenom) : "" }}'
                     },
                     currency: {
                         iso: 'XOF'
                     }
-                });
+                };
+
+                // Debug dans la console
+                console.log("FedaPay Options:", options);
+
+                let widget = FedaPay.init(options);
                 
-                // Configurer le bouton pour lancer le widget
+                // Configurer le widget pour soumettre le formulaire une fois le paiement terminé
+                // Note: Le widget injecte des inputs hidden dans le container s'il est configuré, 
+                // ou on espère qu'il redirige via callback_url si défini (ici non défini).
+                // Avec checkout.js, souvent on laisse faire le submit automatique si un form est parent, 
+                // mais ici on est en manuel.
+                // On va voir si le widget supporte events ou callback.
+                // S'il ne supporte pas, on compte sur le comportement par défaut (POST vers current URL ou autre ?)
+                // Pour l'instant, on se concentre sur l'ouverture.
+                
                 widget.open();
                 
             } catch (e) {
                 console.error("Erreur FedaPay:", e);
-                alert("Impossible d'initialiser le paiement. Veuillez réessayer.");
+                alert("Erreur FedaPay : " + e.message);
             }
         }
     </script>
