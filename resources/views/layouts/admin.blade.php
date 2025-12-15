@@ -32,7 +32,7 @@
         <!-- Sidebar -->
         <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed z-30 inset-y-0 left-0 w-64 bg-white border-r border-gray-200 transition-transform duration-300 md:relative md:translate-x-0 overflow-y-auto">
             <div class="flex items-center justify-center h-16 border-b border-gray-100 mb-6 bg-white">
-                <span class="text-2xl font-bold text-gray-800">Culture<span class="text-orange-600">Bénin</span></span>
+                <a href="{{ route('home') }}" class="text-2xl font-bold text-gray-800 hover:opacity-80 transition-opacity">Culture<span class="text-orange-600">Bénin</span></a>
             </div>
 
             <nav class="px-4 space-y-1">

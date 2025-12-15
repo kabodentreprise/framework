@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('Layout')
 
 @section('title', 'Tableau de bord Administrateur')
 
@@ -9,7 +9,7 @@
         <div class="bg-gradient-to-r from-indigo-600 to-blue-500 rounded-xl shadow-lg p-6 text-white mb-6">
             <div class="flex flex-col md:flex-row items-center justify-between">
                 <div>
-                    <h1 class="text-3xl font-bold mb-2">Bonjour, {{ Auth::user()->prenom }} ! 👋</h1>
+                    <h1 class="text-3xl font-bold mb-2">Bonjour, Mr {{ Auth::user()->prenom }} ! 👋</h1>
                     <p class="text-blue-100">Bienvenue sur votre espace d'administration. Vous avez le contrôle total sur la plateforme.</p>
                 </div>
                 <div class="mt-4 md:mt-0 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 flex items-center border border-white/30">
