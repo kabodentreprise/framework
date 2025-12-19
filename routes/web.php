@@ -120,6 +120,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Paiements
     Route::post('/paiement/initier', [App\Http\Controllers\PaiementController::class, 'initier'])->name('paiement.initier');
     Route::match(['get', 'post'], '/paiement/callback', [App\Http\Controllers\PaiementController::class, 'callback'])->name('paiement.callback');
+    
+    // Favoris
+    Route::post('/favoris/{id}', [App\Http\Controllers\FavorisController::class, 'toggle'])->name('favoris.toggle');
 });
 
 // Routes Publiques (Catalogue)
@@ -134,3 +137,14 @@ Route::get('/{any}', function () {
 
 // Inclure les routes d'authentification
 require __DIR__.'/auth.php';
+
+/*
+|--------------------------------------------------------------------------
+| Routes Espace Contributeur / Abonnement
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/contributeur/abonnement', [App\Http\Controllers\ContributorSubscriptionController::class, 'index'])->name('contributeur.abonnement');
+    Route::get('/contributeur/paiement/initier', [App\Http\Controllers\ContributorSubscriptionController::class, 'initier'])->name('contributeur.paiement.initier'); // GET pour simplifier le lien, POST recommandé en prod
+    Route::match(['get', 'post'], '/contributeur/paiement/callback', [App\Http\Controllers\ContributorSubscriptionController::class, 'callback'])->name('contributeur.paiement.callback');
+});

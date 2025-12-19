@@ -36,6 +36,12 @@ class CatalogueController extends Controller
             $query->where('titre', 'like', '%' . $request->q . '%');
         }
 
+        if ($request->has('search')) {
+            $search = $request->get('search');
+            $query->where('titre', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        }
+
         $contenus = $query->latest()->paginate(12);
         $types = TypeContenus::all();
 

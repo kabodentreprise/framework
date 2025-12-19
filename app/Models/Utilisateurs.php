@@ -25,6 +25,7 @@ class Utilisateurs extends Authenticatable
         'statut',
         'photo',
         'id_role',
+        'solde',
         'id_langue',
         'email_verified_at',
         'last_login_at',
@@ -75,6 +76,16 @@ class Utilisateurs extends Authenticatable
     public function commentaires()
     {
         return $this->hasMany(Commentaires::class, 'id_utilisateur');
+    }
+
+    public function favoris()
+    {
+        return $this->belongsToMany(Contenus::class, 'favoris', 'id_utilisateur', 'id_contenu')->withTimestamps();
+    }
+
+    public function achats()
+    {
+        return $this->hasMany(Achats::class, 'id_utilisateur');
     }
 
     // Accessors

@@ -37,6 +37,13 @@ class DashboardController extends Controller
                 'today_visits'        => rand(100, 500), // Simulée
             ];
 
+            // Récupérer les contenus en attente pour l'affichage (comme pour le modérateur)
+            $contenus_attente = Contenus::with(['auteur', 'langue', 'typeContenu'])
+                ->where('statut', 'en_attente')
+                ->latest()
+                ->take(10)
+                ->get();
+
             // Données pour les graphiques
             try {
                 $usersCallback = $this->getUsersEvolution();
@@ -77,7 +84,8 @@ class DashboardController extends Controller
                 'derniers_utilisateurs', 
                 'usersChart', 
                 'contentChart', 
-                'recentActivities'
+                'recentActivities',
+                'contenus_attente'
             ));
 
         } catch (Exception $e) {

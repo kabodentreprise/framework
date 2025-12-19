@@ -16,6 +16,7 @@ class Achats extends Model
     protected $fillable = [
         'id_utilisateur',
         'id_contenu',
+        'type', // 'contenu' ou 'abonnement'
         'reference',
         'feda_transaction_id',
         'montant',

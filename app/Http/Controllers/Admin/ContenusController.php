@@ -58,6 +58,18 @@ class ContenusController extends Controller
             ->make(true);
     }
 
+    public function __construct()
+    {
+        // Appliquer le middleware de vérification d'abonnement uniquement pour la création
+        // On suppose que l'admin peut tout faire, mais si l'auteur passe par ici, il doit être abonné
+        // Si c'est un ADMIN pur (id_role=1), le middleware CheckContributorSubscription doit gérer l'exception ou on l'applique conditionnellement
+        // Le plus simple est de l'appliquer via le route file ou ici
+        $this->middleware('contributor.subscription')->only(['create', 'store']);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
         return view('admin.contenus.index');

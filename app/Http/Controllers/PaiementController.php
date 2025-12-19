@@ -89,6 +89,12 @@ class PaiementController extends Controller
             $contenu->increment('achats_count');
             $contenu->increment('revenu_total', $achat->montant);
 
+            // CRÉDITER LE SOLDE DE L'AUTEUR
+            if ($contenu->auteur) {
+                // On utilise increment pour être thread-safe sur le solde
+                $contenu->auteur->increment('solde', $achat->montant_auteur);
+            }
+
             return redirect()->route('bibliotheque.index')
                 ->with('success', 'Paiement validé avec succès !');
 

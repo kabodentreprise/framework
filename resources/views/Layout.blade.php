@@ -106,6 +106,14 @@
                             </a>
                         </li>
 
+                        <!-- Bibliothèque (Visible pour tous les authentifiés) -->
+                        <li class="nav-item">
+                            <a href="{{ route('bibliotheque.index') }}" class="nav-link {{ request()->routeIs('bibliotheque.index') ? 'active' : '' }}">
+                                <i class="nav-icon bi bi-collection-play text-info"></i>
+                                <p>Ma Bibliothèque</p>
+                            </a>
+                        </li>
+
                         @auth
                             <!-- Administration Section (Admin only) -->
                             @if(Auth::user()->isAdmin())

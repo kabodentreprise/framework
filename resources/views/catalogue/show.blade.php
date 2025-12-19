@@ -20,6 +20,20 @@
             </span>
             <h1 class="text-4xl font-extrabold text-gray-900 mb-4 leading-tight">{{ $contenu->titre }}</h1>
             
+            <div class="flex items-center space-x-4 mb-6">
+                @auth
+                <form action="{{ route('favoris.toggle', $contenu->id) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="flex items-center space-x-2 px-4 py-2 rounded-full border {{ Auth::user()->favoris->contains($contenu->id) ? 'bg-red-50 border-red-200 text-red-600' : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100' }} transition">
+                        <svg class="w-5 h-5 {{ Auth::user()->favoris->contains($contenu->id) ? 'fill-current' : 'fill-none' }}" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                        <span>{{ Auth::user()->favoris->contains($contenu->id) ? 'Retirer' : 'Favoris' }}</span>
+                    </button>
+                </form>
+                @endauth
+            </div>
+            
             <div class="flex items-center text-gray-600 text-sm border-b border-gray-200 pb-8">
                 <div class="flex items-center mr-6">
                     <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2 text-xs font-bold text-gray-600">
